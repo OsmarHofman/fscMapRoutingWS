@@ -15,6 +15,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
+import br.edu.ifsc.datastructure.Arco;
+import br.edu.ifsc.datastructure.Grafo;
+import br.edu.ifsc.datastructure.Vertice;
+
 
 /**
  * Classe que representa o acesso concreto aos dados. Neste caso, serão feitas
@@ -25,10 +29,9 @@ import org.springframework.core.io.Resource;
  */
 public class DataAccess {
 
+	private Grafo grafo = new Grafo();
 
-/*
-	@Override
-	@Bean
+	
 	public Grafo pegarArquivo() {
 		try {
 			// procura o arquivo a partir de seu caminho
@@ -40,11 +43,12 @@ public class DataAccess {
 		} catch (IOException e) {
 			System.out.println("Erro ao tentar ler o arquivo Excel");
 			e.printStackTrace();
+			System.exit(1);
 			return null;
 		}
 
 	}
-*/
+
 	/**
 	 * Lê a planilha e a partir desta, gera os {@link Vertice}s e {@link Arco}s
 	 * presentes no {@link Grafo}
@@ -81,7 +85,7 @@ public class DataAccess {
 		XSSFSheet planilha = wb.getSheetAt(0);
 		XSSFRow linha;
 		XSSFCell celula;
-		//Vertice conecta = null;
+		Vertice conecta = null;
 
 		Iterator<Row> linhas = planilha.rowIterator();
 
@@ -96,7 +100,7 @@ public class DataAccess {
 					celula = (XSSFCell) celulas.next();
 
 					if (celula.getColumnIndex() == 0) {
-					//	grafo.adicionarVertice(celula.getStringCellValue());
+						grafo.adicionarVertice(celula.getStringCellValue());
 					} else {
 						break;
 					}
@@ -112,52 +116,26 @@ public class DataAccess {
 			if (linha.getRowNum() > 1) {
 
 				Iterator<Cell> celulas = linha.cellIterator();
-				//conecta = null;
+				conecta = null;
 
 				while (celulas.hasNext()) {
 					celula = (XSSFCell) celulas.next();
 
 					if (celula.getColumnIndex() == 0) {
-						//conecta = grafo.pesquisaVertice(celula.getStringCellValue());
+						conecta = grafo.pesquisaVertice(celula.getStringCellValue());
 					} else {
 						if (celula.getCellType().toString().equals("NUMERIC")) {
 							double peso = celula.getNumericCellValue();
-							//grafo.pesquisaVertice(
-									//planilha.getRow(1).getCell(celula.getColumnIndex()).getStringCellValue())
-									//.adicionarArco(conecta, peso);
+							String cell = planilha.getRow(1).getCell(celula.getColumnIndex()).getStringCellValue();
+							grafo.pesquisaVertice(
+									planilha.getRow(1).getCell(celula.getColumnIndex()).getStringCellValue())
+									.adicionarArco(conecta, peso);
 						}
 					}
 				}
 			}
 		}
 
-		planilha = wb.getSheetAt(1);
-		linhas = planilha.rowIterator();
-
-		while (linhas.hasNext()) {
-			linha = (XSSFRow) linhas.next();
-
-			if (linha.getRowNum() > 1) {
-
-				Iterator<Cell> celulas = linha.cellIterator();
-				//conecta = null;
-
-				while (celulas.hasNext()) {
-					celula = (XSSFCell) celulas.next();
-
-					if (celula.getColumnIndex() == 0) {
-						//conecta = grafo.pesquisaVertice(celula.getStringCellValue());
-					} else {
-						if (celula.getCellType().toString().equals("NUMERIC")) {
-							double peso = celula.getNumericCellValue();
-							//grafo.pesquisaVertice(
-									//planilha.getRow(1).getCell(celula.getColumnIndex()).getStringCellValue())
-									//.adicionarArcoHeuristica(conecta, peso);
-						}
-					}
-				}
-			}
-		}
 		wb.close();
 	}
 
