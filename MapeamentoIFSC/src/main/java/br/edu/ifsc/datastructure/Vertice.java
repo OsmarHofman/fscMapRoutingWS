@@ -9,7 +9,6 @@ public class Vertice implements Serializable {
 
 	// Lista de arcos que saem do vértice
 	private final ArrayList<Arco> arcos = new ArrayList<>();
-	private final ArrayList<Arco> arcosHeuristica = new ArrayList<>();
 
 	// Rótulo do vértice: serve para identificação
 	private final String rotulo;
@@ -55,32 +54,12 @@ public class Vertice implements Serializable {
 	}
 
 	/**
-	 * Adiciona um {@link Arco} a esse vértice , dado um {@link Vertice} de destino
-	 * e seu peso baseado em um valor Heurístico (teórico)
-	 * 
-	 * @param destino {@link Vertice} de destino do {@link Arco}
-	 * @param peso    valor em ponto flutuante do peso heurístico do {@link Arco}
-	 */
-	public void adicionarArcoHeuristica(Vertice destino, double peso) {
-		this.arcosHeuristica.add(new Arco(this, destino, peso));
-	}
-
-	/**
 	 * Retorna todos os {@link Arco}s do {@link Vertice}
 	 * 
 	 * @return {@link ArrayList} de {@link Arco} do Vértice
 	 */
 	public ArrayList<Arco> obterArcos() {
 		return this.arcos;
-	}
-
-	/**
-	 * Retorna todos os {@link Arco}s que tem valores Heurísticos do {@link Vertice}
-	 * 
-	 * @return {@link ArrayList} de {@link Arco} do Vértice
-	 */
-	public ArrayList<Arco> obterArcosHeuristica() {
-		return this.arcosHeuristica;
 	}
 
 	/**
@@ -147,21 +126,6 @@ public class Vertice implements Serializable {
 	 */
 	public double obterDistancia() {
 		return this.distancia;
-	}
-
-	/**
-	 * Retorna o valor que representa a distância heurística da raiz até este
-	 * {@link Vertice}
-	 * 
-	 * @return distância heurística total da raiz até este {@link Vertice}
-	 */
-	public double obterDistanciaHeuristica(Vertice final_) {
-		for (Arco arco : arcosHeuristica) {
-			if (arco.getDestino().equals(final_)) {
-				return arco.getPeso();
-			}
-		}
-		return this.distanciaHeuristica;
 	}
 
 	/**
