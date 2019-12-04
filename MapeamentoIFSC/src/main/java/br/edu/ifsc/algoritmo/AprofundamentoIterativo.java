@@ -1,10 +1,9 @@
-package br.edu.ifsc.algoritimo;
+package br.edu.ifsc.algoritmo;
 
 import java.util.ArrayList;
 
 import br.edu.ifsc.basestructure.Fila;
 import br.edu.ifsc.datastructure.Arco;
-import br.edu.ifsc.datastructure.Caminho;
 import br.edu.ifsc.datastructure.Grafo;
 import br.edu.ifsc.datastructure.Vertice;
 
@@ -13,10 +12,8 @@ public class AprofundamentoIterativo {
 		private boolean encontrou_caminho = false;
 
 		private ArrayList<Arco> lista_filhos = new ArrayList<>();
-		private int nosExplorados;
-		private int nosGerados;
 
-		public Caminho buscaAprofundamentoIterativo(Grafo g, Vertice inicial, Vertice destino) {
+		public String buscaAprofundamentoIterativo(Grafo g, Vertice inicial, Vertice destino) {
 			// Lista de Vertices resultantes da busca
 			encontrou_caminho = false;
 			Vertice vertice_final = new Vertice();
@@ -27,15 +24,12 @@ public class AprofundamentoIterativo {
 			// Caso o encontrou_caminho seja true,significa que foi encontrado o vertice
 			// de destino,e retornará o vertice_final
 			while (!encontrou_caminho) {
-				nosGerados = 0;
-				nosExplorados = 0;
 				vertice_final = buscaProfundidadeLimitada(g, inicial, destino, limite);
 				// Limite é incrementado para caso o caminho não seja encontrado na iteração
 				limite++;
 			}
-
-			//TODO mudar retorno
-			return new Caminho();
+			
+			return Vertice.inverteCaminho(vertice_final);
 		}
 
 		/**
@@ -72,7 +66,6 @@ public class AprofundamentoIterativo {
 
 					// retira um vértice da fila
 					fila.pop();
-					nosExplorados++;
 					// Verifica se a busca está sendo feita até o limite
 					if (cont <= limite) {
 
@@ -106,7 +99,6 @@ public class AprofundamentoIterativo {
 
 									// insere o vértice filho a fila
 									fila.push(filho);
-									nosGerados++;
 
 									// Verifica se o filho é igual ao destino
 									if (filho.equals(destino)) {

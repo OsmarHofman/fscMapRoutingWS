@@ -13,6 +13,7 @@ public class Vertice implements Serializable {
 	// Rótulo do vértice: serve para identificação
 	private final String rotulo;
 
+	private String direcao;
 //Os quatro próximos atributos são utilizados pelos algoritmos de grafos.
 
 	// Quando o valor de visitado for 0 (zero) significa que o vértice ainda
@@ -26,7 +27,6 @@ public class Vertice implements Serializable {
 	// temporariamente distâncias nas iterações dos algoritmos. Os métodos
 	// definirDistancia(), zerarDistancia() e obterDistancia() devem ser usados.
 	private double distancia = Double.POSITIVE_INFINITY;
-	private double distanciaHeuristica = Double.POSITIVE_INFINITY;
 
 	// Algoritmos de caminhos podem precisar da informação de qual caminho foi
 	// utilizado para se obter a distância informada. O caminho é uma String
@@ -92,13 +92,6 @@ public class Vertice implements Serializable {
 	public void zerarDistancia() {
 		this.distancia = Double.POSITIVE_INFINITY;
 	}
-	
-	/**
-	 * Adiciona um valor infinito a distancia para "zerá-la"
-	 */
-	public void zerarDistanciaHeuristica() {
-		this.distanciaHeuristica = Double.POSITIVE_INFINITY;
-	}
 
 	/**
 	 * Define o valor da distância do {@link Vertice}
@@ -110,22 +103,21 @@ public class Vertice implements Serializable {
 	}
 
 	/**
-	 * Define o valor da distância heurística do {@link Vertice}
-	 * 
-	 * @param distancia número que representa a distância heurística do vértice da
-	 *                  raiz
-	 */
-	public void definirDistanciaHeuristica(double distanciaEuristica) {
-		this.distanciaHeuristica = distanciaEuristica;
-	}
-
-	/**
 	 * Retorna o valor que representa a distância da raiz até este {@link Vertice}
 	 * 
 	 * @return distância total da raiz até este {@link Vertice}
 	 */
 	public double obterDistancia() {
 		return this.distancia;
+	}
+	
+
+	public String getDirecao() {
+		return direcao;
+	}
+
+	public void setDirecao(String direcao) {
+		this.direcao = direcao;
 	}
 
 	/**
@@ -184,6 +176,18 @@ public class Vertice implements Serializable {
 	@Override
 	public boolean equals(Object o) {
 		return o.toString().equals(this.rotulo);
+	}
+	
+	public static String inverteCaminho(Vertice vertice) {
+		String[] caminhos = vertice.getCaminho().split("/");
+		String caminhoFinal = "";
+		for (int i = caminhos.length - 1; i >= 0 ; i--) {
+			caminhoFinal +=caminhos[i];
+			if(i!=0) {
+				caminhoFinal += " / ";
+			}
+		}
+		return caminhoFinal.trim();
 	}
 
 }
