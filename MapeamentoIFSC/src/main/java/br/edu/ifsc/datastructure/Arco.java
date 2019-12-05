@@ -4,9 +4,9 @@ public class Arco implements Comparable<Arco> {
 
 	private Vertice destino;
 	private Vertice origem;
-	private double peso;
+	private int peso;
 
-	public Arco(Vertice origem, Vertice destino, double peso) {
+	public Arco(Vertice origem, Vertice destino, int peso) {
 		this.origem = origem;
 		this.destino = destino;
 		this.peso = peso;
@@ -35,7 +35,7 @@ public class Arco implements Comparable<Arco> {
 	 * 
 	 * @return valor do peso do arco
 	 */
-	public double getPeso() {
+	public int getPeso() {
 		return peso;
 	}
 

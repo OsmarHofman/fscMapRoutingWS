@@ -11,14 +11,12 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
 import br.edu.ifsc.datastructure.Arco;
 import br.edu.ifsc.datastructure.Grafo;
 import br.edu.ifsc.datastructure.Vertice;
-
 
 /**
  * Classe que representa o acesso concreto aos dados. Neste caso, serão feitas
@@ -31,12 +29,11 @@ public class DataAccess {
 
 	private Grafo grafo = new Grafo();
 
-	
 	public Grafo pegarArquivo() {
 		try {
 			// procura o arquivo a partir de seu caminho
 			Resource resource = new ClassPathResource("Planilha_Locais.xlsx");
-	        InputStream arquivo = resource.getInputStream();
+			InputStream arquivo = resource.getInputStream();
 			// le o arquivo excel para incluir os vertices e Arcos
 			this.lerArquivoExcel(arquivo);
 			return grafo;
@@ -61,7 +58,7 @@ public class DataAccess {
 		XSSFWorkbook wb = new XSSFWorkbook(arquivo);
 		converterWBParaGrafo(wb);
 	}
-	
+
 	/**
 	 * Lê a planilha e a partir desta, gera os {@link Vertice}s e {@link Arco}s
 	 * presentes no {@link Grafo}
@@ -73,13 +70,14 @@ public class DataAccess {
 		XSSFWorkbook wb = new XSSFWorkbook(arquivo);
 		converterWBParaGrafo(wb);
 	}
-	
+
 	/**
 	 * Lê a planilha e a partir desta, gera os {@link Vertice}s e {@link Arco}s
 	 * presentes no {@link Grafo}
 	 * 
-	 * @param wb plainilha convertida conforme o parametro do método {@link lerArquivoExcel}
-	 * @throws IOException 
+	 * @param wb plainilha convertida conforme o parametro do método
+	 *           {@link lerArquivoExcel}
+	 * @throws IOException
 	 */
 	private void converterWBParaGrafo(XSSFWorkbook wb) throws IOException {
 		XSSFSheet planilha = wb.getSheetAt(0);
@@ -125,8 +123,7 @@ public class DataAccess {
 						conecta = grafo.pesquisaVertice(celula.getStringCellValue());
 					} else {
 						if (celula.getCellType().toString().equals("NUMERIC")) {
-							double peso = celula.getNumericCellValue();
-							String cell = planilha.getRow(1).getCell(celula.getColumnIndex()).getStringCellValue();
+							int peso = (int) celula.getNumericCellValue();
 							grafo.pesquisaVertice(
 									planilha.getRow(1).getCell(celula.getColumnIndex()).getStringCellValue())
 									.adicionarArco(conecta, peso);
@@ -140,4 +137,3 @@ public class DataAccess {
 	}
 
 }
-

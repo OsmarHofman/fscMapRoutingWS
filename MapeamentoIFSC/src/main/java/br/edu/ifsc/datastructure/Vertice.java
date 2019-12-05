@@ -13,7 +13,6 @@ public class Vertice implements Serializable {
 	// Rótulo do vértice: serve para identificação
 	private final String rotulo;
 
-	private String direcao;
 //Os quatro próximos atributos são utilizados pelos algoritmos de grafos.
 
 	// Quando o valor de visitado for 0 (zero) significa que o vértice ainda
@@ -26,7 +25,7 @@ public class Vertice implements Serializable {
 	// atributo servirá como um "medidor auxiliar de distância", armazenando
 	// temporariamente distâncias nas iterações dos algoritmos. Os métodos
 	// definirDistancia(), zerarDistancia() e obterDistancia() devem ser usados.
-	private double distancia = Double.POSITIVE_INFINITY;
+	private int distancia = Integer.MAX_VALUE;
 
 	// Algoritmos de caminhos podem precisar da informação de qual caminho foi
 	// utilizado para se obter a distância informada. O caminho é uma String
@@ -49,7 +48,7 @@ public class Vertice implements Serializable {
 	 * @param destino {@link Vertice} de destino do {@link Arco}
 	 * @param peso    valor em ponto flutuante do peso do {@link Arco}
 	 */
-	public void adicionarArco(Vertice destino, double peso) {
+	public void adicionarArco(Vertice destino, int peso) {
 		this.arcos.add(new Arco(this, destino, peso));
 	}
 
@@ -90,7 +89,7 @@ public class Vertice implements Serializable {
 	 * Adiciona um valor infinito a distancia para "zerá-la"
 	 */
 	public void zerarDistancia() {
-		this.distancia = Double.POSITIVE_INFINITY;
+		this.distancia = Integer.MAX_VALUE;
 	}
 
 	/**
@@ -98,7 +97,7 @@ public class Vertice implements Serializable {
 	 * 
 	 * @param distancia número que representa a distância do vértice da raiz
 	 */
-	public void definirDistancia(double distancia) {
+	public void definirDistancia(int distancia) {
 		this.distancia = distancia;
 	}
 
@@ -107,17 +106,8 @@ public class Vertice implements Serializable {
 	 * 
 	 * @return distância total da raiz até este {@link Vertice}
 	 */
-	public double obterDistancia() {
+	public int obterDistancia() {
 		return this.distancia;
-	}
-	
-
-	public String getDirecao() {
-		return direcao;
-	}
-
-	public void setDirecao(String direcao) {
-		this.direcao = direcao;
 	}
 
 	/**
@@ -132,7 +122,7 @@ public class Vertice implements Serializable {
 			return this.rotulo;
 		}
 		String nome[] = this.rotulo.split(" / ");
-		return caminho + " / " + nome[0].trim();
+		return caminho + ", " + nome[0].trim();
 	}
 
 	/**
@@ -141,31 +131,11 @@ public class Vertice implements Serializable {
 	 * @param caminho {@link String} com o caminho para chegar a este
 	 *                {@link Vertice}
 	 */
-	public void setCaminho(String caminho) {
-		this.caminho = caminho;
-	}
-
-	/**
-	 * Retorna o valor do caminho inverso do {@link Vertice} (Destino até a Origem).
-	 * É utilizado para a busca heurística A*
-	 * 
-	 * @return {@link String} com o caminho inverso do {@link Vertice}
-	 */
-	public String getCaminhoInverso() {
-		if (caminhoInverso == null || caminhoInverso.equals("")) {
-			return this.rotulo;
-		}
-		return caminhoInverso + " / " + this.rotulo;
-	}
-
-	/**
-	 * Atribui o valor ao caminho inverso do {@link Vertice} (Destino até a Origem).
-	 * É utilizado para a busca heurística A*
-	 * 
-	 * @param caminhoInverso rótulo que contém o caminho inverso do {@link Vertice}
-	 */
-	public void setCaminhoInverso(String caminhoInverso) {
-		this.caminhoInverso = caminhoInverso;
+	public void setCaminho(String caminho, int distancia) {
+		if (caminho == null)
+			this.caminho = null;
+		else
+			this.caminho = caminho + distancia;
 	}
 
 	@Override
@@ -177,17 +147,46 @@ public class Vertice implements Serializable {
 	public boolean equals(Object o) {
 		return o.toString().equals(this.rotulo);
 	}
-	
-	public static String inverteCaminho(Vertice vertice) {
-		String[] caminhos = vertice.getCaminho().split("/");
+
+	public static String ajustaCaminho(Vertice vertice) {
 		String caminhoFinal = "";
-		for (int i = caminhos.length - 1; i >= 0 ; i--) {
-			caminhoFinal +=caminhos[i];
-			if(i!=0) {
-				caminhoFinal += " / ";
+		String[] caminhos = vertice.getCaminho().split(",");
+		for (int i = caminhos.length - 1; i > 0; i--) {
+			caminhoFinal += "Do (a)";
+			if (i == caminhos.length - 1)
+				caminhoFinal += caminhos[i].replace("_", "");
+			else {
+				caminhoFinal += getLocal(caminhos[i]);
 			}
+			String[] separaDirecao = caminhos[i - 1].trim().split("_");
+			caminhoFinal += " dirija-se à " + getDirecao(separaDirecao[1]) + " até o (a)" + getLocal(separaDirecao[0])
+					+ ";\n";
 		}
 		return caminhoFinal.trim();
+	}
+
+	private static String getLocal(String caminhos) {
+		String[] caminhoIntermediario = caminhos.split("_");
+		if (caminhoIntermediario[0].contains("Escada")) {
+			String caminhoEscada = " Escada";
+			String andar = caminhoIntermediario[0].split("-")[1];
+			if (andar.equals("1"))
+				return caminhoEscada + "(Primeiro Andar)";
+			else
+				return caminhoEscada + "(Térreo)";
+		} else if (caminhoIntermediario[0].contains("Porta"))
+			return " Porta";
+		else
+			return " " + caminhoIntermediario[0].trim();
+	}
+
+	private static String getDirecao(String caminho) {
+		if (Integer.valueOf(caminho) == 1)
+			return "frente";
+		else if (Integer.valueOf(caminho) == 2)
+			return "direita";
+		else
+			return "esquerda";
 	}
 
 }

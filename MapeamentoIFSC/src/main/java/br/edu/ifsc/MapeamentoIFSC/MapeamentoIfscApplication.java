@@ -1,5 +1,6 @@
 package br.edu.ifsc.MapeamentoIFSC;
 
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import br.edu.ifsc.algoritmo.Routing;
@@ -11,16 +12,16 @@ import br.edu.ifsc.interfaces.IRouting;
 public class MapeamentoIfscApplication {
 
 	public static void main(String[] args) {
-		//SpringApplication.run(MapeamentoIfscApplication.class, args);
-		
+		SpringApplication.run(MapeamentoIfscApplication.class, args);
+
 		DataAccess dt = new DataAccess();
 		Grafo g1 = dt.pegarArquivo();
 		IRouting route = new Routing();
-		//TODO verificar colocar a direção dos nodos
-		String caminho = route.bestRoute("Coord. Pedagógica", g1);
-		
-	System.out.println(caminho.toString());
-		
+		// TODO verificar colocar a direção dos nodos
+		String caminho = route.bestRoute("Quadra_", g1);
+
+		System.out.println(caminho.toString());
+
 	}
 
 }

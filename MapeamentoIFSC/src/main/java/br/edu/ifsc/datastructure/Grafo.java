@@ -64,9 +64,7 @@ public class Grafo {
 		for (Vertice lVertice : aGrafo.obterVertices()) {
 			lVertice.zerarVisitas();
 			lVertice.zerarDistancia();
-			lVertice.setCaminho("");
-			lVertice.zerarDistanciaHeuristica();
-			lVertice.setCaminhoInverso("");
+			lVertice.setCaminho("", Integer.MAX_VALUE);
 		}
 	}
 
@@ -75,7 +73,4 @@ public class Grafo {
 		return "Grafo [vertices=" + vertices + "]";
 	}
 
-	
-	
-	
 }
