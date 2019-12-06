@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.edu.ifsc.algoritmo.Front;
 import br.edu.ifsc.algoritmo.Routing;
 import br.edu.ifsc.dataaccess.DataAccess;
 import br.edu.ifsc.datastructure.Grafo;
@@ -32,8 +33,10 @@ public class DataRoutes {
 	}
 
 	@GetMapping("/exemplo")
-	public String entrada() {
-		return "Fábrica";
+	public Front entrada() {
+		Front front = new Front();
+		front.setDestino("Teste");
+		return front;
 	}
 
 	@CrossOrigin
