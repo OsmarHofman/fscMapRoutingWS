@@ -30,7 +30,7 @@ public class SwaggerConfig {
 	}
 
 	private ApiInfo createMetaInfo() {
-		ApiInfo lApiInfo = new ApiInfo("API REST Projeto de Pesquisa",
+		ApiInfo lApiInfo = new ApiInfo("API REST Mapeamento IFSC",
 				"API REST Para um trabalho de Sistemas Distribuídos",
 				"1.0",
 				"Uso restrito para estudantes",
