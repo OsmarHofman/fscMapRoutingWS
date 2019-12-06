@@ -30,6 +30,7 @@ public class DataRoutes {
 		route = new Routing();
 	}
 
+	@CrossOrigin
 	@RequestMapping(value = "/caminho", method = RequestMethod.POST)
 	public ResponseEntity<String> routing(@RequestBody @Valid String destino) {
 		String caminho = route.bestRoute(destino + "_", grafo);
