@@ -31,6 +31,7 @@ public class Vertice implements Serializable {
 	// utilizado para se obter a distância informada. O caminho é uma String
 	// Contendo os rótulos dos vértices utilizados para chegar até o vértice
 	private String caminho = "";
+	@SuppressWarnings("unused")
 	private String caminhoInverso = "";
 
 	public Vertice(String rotulo) {

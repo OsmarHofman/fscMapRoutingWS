@@ -5,7 +5,6 @@ import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,10 +15,13 @@ import br.edu.ifsc.algoritmo.Routing;
 import br.edu.ifsc.dataaccess.DataAccess;
 import br.edu.ifsc.datastructure.Grafo;
 import br.edu.ifsc.interfaces.IRouting;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(value = "/api")
+@Api(value = "API REST Euro Tour")
 public class DataRoutes {
 
 	private IRouting route;
@@ -32,14 +34,15 @@ public class DataRoutes {
 		route = new Routing();
 	}
 
-	@GetMapping("/exemplo")
+	@ApiOperation(value = "Teste")
+	@RequestMapping(value = "/exemplo", method = RequestMethod.GET)
 	public Front entrada() {
 		Front front = new Front();
 		front.setDestino("Teste");
 		return front;
 	}
 
-	@CrossOrigin
+	@ApiOperation(value = "Teste")
 	@RequestMapping(value = "/caminho", method = RequestMethod.POST)
 	public ResponseEntity<String> routing(@RequestBody @Valid String destino) {
 		String caminho = route.bestRoute(destino + "_", grafo);
