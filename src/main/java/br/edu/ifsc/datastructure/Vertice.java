@@ -31,8 +31,6 @@ public class Vertice implements Serializable {
 	// utilizado para se obter a distância informada. O caminho é uma String
 	// Contendo os rótulos dos vértices utilizados para chegar até o vértice
 	private String caminho = "";
-	@SuppressWarnings("unused")
-	private String caminhoInverso = "";
 
 	public Vertice(String rotulo) {
 		this.rotulo = rotulo;
@@ -133,10 +131,7 @@ public class Vertice implements Serializable {
 	 *                {@link Vertice}
 	 */
 	public void setCaminho(String caminho, int distancia) {
-		if (caminho == null)
-			this.caminho = null;
-		else
-			this.caminho = caminho + distancia;
+		this.caminho = (caminho == null) ? null : caminho + distancia;
 	}
 
 	@Override
@@ -149,16 +144,22 @@ public class Vertice implements Serializable {
 		return o.toString().equals(this.rotulo);
 	}
 
+	/**
+	 * Retorna uma {@link String} que representa um caminho do Saguão até o
+	 * {@link Vertice} destino informado.
+	 * 
+	 * @param vertice {@link Vertice} de destino
+	 * @return {@link String} que indica qual o caminho que deve ser percorrido até
+	 *         o destino
+	 */
 	public static String ajustaCaminho(Vertice vertice) {
 		String caminhoFinal = "";
 		String[] caminhos = vertice.getCaminho().split(",");
 		for (int i = caminhos.length - 1; i > 0; i--) {
 			caminhoFinal += "Do (a)";
-			if (i == caminhos.length - 1)
-				caminhoFinal += caminhos[i].replace("_", "");
-			else {
-				caminhoFinal += getLocal(caminhos[i]);
-			}
+			// Verifica se é o local inicial (Saguão), caso contrário formata o local para
+			// visualização
+			caminhoFinal += (i == caminhos.length - 1) ? caminhos[i].replace("_", "") : getLocal(caminhos[i]);
 			String[] separaDirecao = caminhos[i - 1].trim().split("_");
 			caminhoFinal += " dirija-se à " + getDirecao(separaDirecao[1]) + " até o (a)" + getLocal(separaDirecao[0])
 					+ ";\n";
@@ -166,21 +167,38 @@ public class Vertice implements Serializable {
 		return caminhoFinal.trim();
 	}
 
+	/**
+	 * A partir de um local do caminho de um {@link Vertice}, retorna o seu nome
+	 * formatado para facilitar a visualização
+	 * 
+	 * @param caminhos {@link String} que representa o local a ser adicionado ao
+	 *                 caminho final
+	 * @return {@link String} formatada que representa um local a ser percorrido
+	 *         pelo usuário
+	 */
 	private static String getLocal(String caminhos) {
 		String[] caminhoIntermediario = caminhos.split("_");
 		if (caminhoIntermediario[0].contains("Escada")) {
 			String caminhoEscada = " Escada";
 			String andar = caminhoIntermediario[0].split("-")[1];
-			if (andar.equals("1"))
-				return caminhoEscada + "(Primeiro Andar)";
-			else
-				return caminhoEscada + "(Térreo)";
+			return (andar.equals("1")) ? caminhoEscada + "(Primeiro Andar)" : caminhoEscada + "(Térreo)";
 		} else if (caminhoIntermediario[0].contains("Porta"))
 			return " Porta";
 		else
 			return " " + caminhoIntermediario[0].trim();
 	}
 
+	/**
+	 * A partir de um número representado por uma {@link String}, retorna qual a
+	 * direção que deve ser seguida
+	 * 
+	 * @param caminho {@link String} que representa uma direção a ser seguida,
+	 *                sendo:<br>
+	 *                - 1 == frente;<br>
+	 *                - 2 == direita;<br>
+	 *                - 3 == esquerda.
+	 * @return A direção a ser tomada pelo usuário
+	 */
 	private static String getDirecao(String caminho) {
 		if (Integer.valueOf(caminho) == 1)
 			return "frente";

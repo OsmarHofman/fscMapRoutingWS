@@ -1,6 +1,5 @@
 package br.edu.ifsc.dataaccess;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
@@ -44,19 +43,6 @@ public class DataAccess {
 			return null;
 		}
 
-	}
-
-	/**
-	 * Lê a planilha e a partir desta, gera os {@link Vertice}s e {@link Arco}s
-	 * presentes no {@link Grafo}
-	 * 
-	 * @param arquivo url do caminho do arquivo excel
-	 * @throws IOException erro de caso o caminho esteja incorreto
-	 */
-	@SuppressWarnings("unused")
-	private void lerArquivoExcel(FileInputStream arquivo) throws IOException {
-		XSSFWorkbook wb = new XSSFWorkbook(arquivo);
-		converterWBParaGrafo(wb);
 	}
 
 	/**

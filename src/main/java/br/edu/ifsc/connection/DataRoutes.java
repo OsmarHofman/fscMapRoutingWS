@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.edu.ifsc.algoritmo.Front;
 import br.edu.ifsc.algoritmo.Routing;
 import br.edu.ifsc.dataaccess.DataAccess;
 import br.edu.ifsc.datastructure.Grafo;
@@ -21,7 +20,7 @@ import io.swagger.annotations.ApiOperation;
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(value = "/api")
-@Api(value = "API REST Euro Tour")
+@Api(value = "API REST IFSCRounting")
 public class DataRoutes {
 
 	private IRouting route;
@@ -36,13 +35,11 @@ public class DataRoutes {
 
 	@ApiOperation(value = "Teste")
 	@RequestMapping(value = "/exemplo", method = RequestMethod.GET)
-	public Front entrada() {
-		Front front = new Front();
-		front.setDestino("Teste");
-		return front;
+	public String entrada() {
+		return "Estufa";
 	}
 
-	@ApiOperation(value = "Teste")
+	@ApiOperation(value = "Caminho")
 	@RequestMapping(value = "/caminho", method = RequestMethod.POST)
 	public ResponseEntity<String> routing(@RequestBody @Valid String destino) {
 		String caminho = route.bestRoute(destino + "_", grafo);
