@@ -33,7 +33,7 @@ public class DataRoutes {
 		route = new Routing();
 	}
 
-	@CrossOrigin
+	//@CrossOrigin
 	@ApiOperation(value = "Teste")
 	@RequestMapping(value = "/exemplo", method = RequestMethod.GET)
 	public ResponseEntity<String> entrada() {
@@ -41,11 +41,11 @@ public class DataRoutes {
 		return new ResponseEntity<>(local, HttpStatus.OK);
 	}
 	
-	@CrossOrigin
+	//@CrossOrigin
 	@ApiOperation(value = "Caminho")
 	@RequestMapping(value = "/caminho", method = RequestMethod.POST)
-	public ResponseEntity<String> routing(@PathVariable String destino) {
+	public ResponseEntity<String> routing(@RequestBody @Valid String destino) {
 		String caminho = route.bestRoute(destino + "_", grafo);
-		return new ResponseEntity<>(caminho, HttpStatus.OK);
+		return new ResponseEntity<String>(caminho, HttpStatus.OK);
 	}
 }
