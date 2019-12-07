@@ -35,14 +35,15 @@ public class DataRoutes {
 
 	@ApiOperation(value = "Teste")
 	@RequestMapping(value = "/exemplo", method = RequestMethod.GET)
-	public String entrada() {
-		return "Estufa";
+	public ResponseEntity<String> entrada() {
+		String local = "Estufa";
+		return new ResponseEntity<>(local, HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "Caminho")
 	@RequestMapping(value = "/caminho", method = RequestMethod.POST)
-	public ResponseEntity<String> routing(@RequestBody @Valid String destino) {
+	public ResponseEntity<String> routing(@PathVariable String destino) {
 		String caminho = route.bestRoute(destino + "_", grafo);
-		return new ResponseEntity<String>(caminho, HttpStatus.OK);
+		return new ResponseEntity<>(caminho, HttpStatus.OK);
 	}
 }
