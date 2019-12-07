@@ -41,15 +41,6 @@ public class DataRoutes {
 		return new ResponseEntity<>(local, HttpStatus.OK);
 	}
 	
-    @CrossOrigin
-    @RequestMapping(value = "/teste", method = RequestMethod.GET)
-    public ResponseEntity<Integer> occupySlot() {
-        int slot = 2;
-        if (slot > 0)
-            return new ResponseEntity<>(slot, HttpStatus.OK);
-        return new ResponseEntity<>(slot, HttpStatus.UNAUTHORIZED);
-    }
-
 	@CrossOrigin
 	@ApiOperation(value = "Caminho")
 	@RequestMapping(value = "/caminho", method = RequestMethod.POST)
