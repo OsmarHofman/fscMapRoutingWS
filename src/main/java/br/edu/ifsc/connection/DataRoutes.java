@@ -33,6 +33,7 @@ public class DataRoutes {
 		route = new Routing();
 	}
 
+	@CrossOrigin
 	@ApiOperation(value = "Teste")
 	@RequestMapping(value = "/exemplo", method = RequestMethod.GET)
 	public ResponseEntity<String> entrada() {
@@ -40,6 +41,7 @@ public class DataRoutes {
 		return new ResponseEntity<>(local, HttpStatus.OK);
 	}
 
+	@CrossOrigin
 	@ApiOperation(value = "Caminho")
 	@RequestMapping(value = "/caminho", method = RequestMethod.POST)
 	public ResponseEntity<String> routing(@PathVariable String destino) {
