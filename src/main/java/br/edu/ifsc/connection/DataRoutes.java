@@ -14,6 +14,8 @@ import br.edu.ifsc.algoritmo.Routing;
 import br.edu.ifsc.dataaccess.DataAccess;
 import br.edu.ifsc.datastructure.Grafo;
 import br.edu.ifsc.interfaces.IRouting;
+import br.edu.ifsc.model.Front;
+import br.edu.ifsc.model.FrontToBack;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -36,16 +38,18 @@ public class DataRoutes {
 	//@CrossOrigin
 	@ApiOperation(value = "Teste")
 	@RequestMapping(value = "/exemplo", method = RequestMethod.GET)
-	public ResponseEntity<String> entrada() {
-		String local = "Estufa";
-		return new ResponseEntity<>(local, HttpStatus.OK);
+	public FrontToBack entrada() {
+		FrontToBack front = new FrontToBack();
+		front.setDestino("Estufa");
+		return front;
 	}
 	
 	//@CrossOrigin
 	@ApiOperation(value = "Caminho")
 	@RequestMapping(value = "/caminho", method = RequestMethod.POST)
-	public ResponseEntity<String> routing(@RequestBody @Valid String destino) {
-		String caminho = route.bestRoute(destino + "_", grafo);
-		return new ResponseEntity<String>(caminho, HttpStatus.OK);
+	public FrontToBack routing(@RequestBody @Valid String front) {
+		FrontToBack frontBack = new FrontToBack();
+		frontBack.setDestino(route.bestRoute(front + "_", grafo));
+		return frontBack;
 	}
 }
